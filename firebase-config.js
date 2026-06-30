@@ -13,12 +13,12 @@
 // ここにFirebaseの設定値を貼り付けてください
 // ====================================================
 const firebaseConfig = {
-  apiKey: "YOUR_API_KEY",
-  authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-  projectId: "YOUR_PROJECT_ID",
-  storageBucket: "YOUR_PROJECT_ID.appspot.com",
-  messagingSenderId: "YOUR_SENDER_ID",
-  appId: "YOUR_APP_ID"
+  apiKey: "AIzaSyBAS4yzNFGx0hhRDHgCjg26efGpAUoaVhg",
+  authDomain: "votingv2-43230.firebaseapp.com",
+  projectId: "votingv2-43230",
+  storageBucket: "votingv2-43230.firebasestorage.app",
+  messagingSenderId: "628259110731",
+  appId: "1:628259110731:web:1a419de776c0dd273af2ce"
 };
 
 // Firebase初期化

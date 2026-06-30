@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>採点ページ - グループ発表 表彰採点</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Noto+Serif+JP:wght@700&family=DM+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <!-- Firebase SDK (バージョン9 compat) -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<!-- ── ヘッダー ── -->
+<header class="page-header">
+  <div class="container">
+    <span class="page-title">📝 採点フォーム</span>
+    <div style="display:flex; align-items:center; gap:12px;">
+      <span id="status-badge" class="badge badge-open">受付中</span>
+      <nav class="nav-links">
+        <a href="results.html">結果画面</a>
+        <a href="admin.html">管理</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main style="padding: 24px 0 40px;">
+  <div class="container">
+
+    <!-- ── ローディング ── -->
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <span>データを読み込み中...</span>
+    </div>
+
+    <!-- ── 採点受付停止メッセージ ── -->
+    <div id="closed-msg" class="card" style="display:none; text-align:center; padding:40px;">
+      <div style="font-size:3rem; margin-bottom:16px;">🚫</div>
+      <h2 style="color:var(--color-danger); font-family:var(--font-display); margin-bottom:8px;">採点受付を停止中</h2>
+      <p style="color:var(--color-muted);">運営者が採点を開始するまでお待ちください。</p>
+    </div>
+
+    <!-- ── 採点フォーム本体 ── -->
+    <div id="score-form" style="display:none;">
+
+      <!-- グループ表示 -->
+      <div class="group-hero">
+        <div class="group-hero-label">現在の評価対象グループ</div>
+        <div class="group-hero-name" id="current-group-name">--</div>
+        <div style="color:var(--color-muted); font-size:0.85rem;" id="event-title-sub">グループ発表 表彰採点</div>
+      </div>
+
+      <!-- 採点済みメッセージ（二重採点防止） -->
+      <div id="already-scored-msg" class="alert alert-warning" style="display:none;">
+        ✅ このグループはすでに採点済みです。<br>
+        <span style="font-size:0.85rem;">別のグループが表示されたら採点できます。</span>
+      </div>
+
+      <!-- アラート表示 -->
+      <div id="alert-area"></div>
+
+      <div class="card">
+        <div class="card-title">🎯 評価を入力してください（各1〜5点）</div>
+
+        <!-- A部門 -->
+        <div class="scoring-section" id="section-a">
+          <div class="category-label">
+            <span class="category-dot cat-a"></span>
+            <span class="category-name" id="cat-a-name">A部門</span>
+            <span class="category-desc" id="cat-a-desc">（例：企画力・着眼点・独自性）</span>
+          </div>
+          <div class="score-buttons" id="score-buttons-a">
+            <!-- JSで生成 -->
+          </div>
+        </div>
+
+        <!-- B部門 -->
+        <div class="scoring-section" id="section-b">
+          <div class="category-label">
+            <span class="category-dot cat-b"></span>
+            <span class="category-name" id="cat-b-name">B部門</span>
+            <span class="category-desc" id="cat-b-desc">（例：発表力・わかりやすさ・説得力）</span>
+          </div>
+          <div class="score-buttons" id="score-buttons-b">
+          </div>
+        </div>
+
+        <!-- C部門 -->
+        <div class="scoring-section" id="section-c">
+          <div class="category-label">
+            <span class="category-dot cat-c"></span>
+            <span class="category-name" id="cat-c-name">C部門</span>
+            <span class="category-desc" id="cat-c-desc">（例：実現可能性・完成度・チームワーク）</span>
+          </div>
+          <div class="score-buttons" id="score-buttons-c">
+          </div>
+        </div>
+
+        <!-- コメント -->
+        <div class="form-group" style="margin-top:8px;">
+          <label class="form-label" for="comment-input">💬 コメント（任意）</label>
+          <textarea
+            id="comment-input"
+            class="form-control"
+            placeholder="感想やフィードバックを自由に入力してください"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <!-- 送信ボタン -->
+        <button id="submit-btn" class="btn btn-primary btn-block" style="margin-top:8px;" disabled>
+          採点を送信する
+        </button>
+        <p style="font-size:0.8rem; color:var(--color-muted); text-align:center; margin-top:8px;">
+          ※ 同じグループへの二重採点はできません
+        </p>
+      </div>
+
+      <!-- 送信成功メッセージ -->
+      <div id="success-msg" class="card" style="display:none; text-align:center; padding:32px;">
+        <div style="font-size:2.5rem; margin-bottom:12px;">🎉</div>
+        <h3 style="color:var(--color-success); font-family:var(--font-display); margin-bottom:8px;">採点を送信しました！</h3>
+        <p style="color:var(--color-muted); margin-bottom:20px;">次のグループの発表をお待ちください。</p>
+        <a href="results.html" class="btn btn-secondary">結果を確認する</a>
+      </div>
+
+    </div><!-- /#score-form -->
+  </div>
+</main>
+
+<footer class="page-footer">
+  グループ発表 表彰・採点システム
+</footer>
+
+<!-- Firebase設定 -->
+<script src="firebase-config.js"></script>
+<!-- 採点ページのメインスクリプト -->
+<script src="app.js"></script>
+
+</body>
+</html>

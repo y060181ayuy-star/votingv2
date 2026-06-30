@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>集計結果 - グループ発表 表彰採点</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;600;700&family=Noto+Serif+JP:wght@700&family=DM+Mono:wght@500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+
+<!-- ── ヘッダー ── -->
+<header class="page-header">
+  <div class="container" style="max-width:1100px;">
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+      <span class="page-title">🏆 集計・表彰結果</span>
+      <span id="event-title-badge" style="font-size:0.85rem; color:var(--color-muted);"></span>
+    </div>
+    <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+      <!-- 採点者数 -->
+      <span style="font-size:0.85rem; color:var(--color-muted);">
+        採点数：<strong id="total-votes" style="color:var(--color-gold);">0</strong>
+      </span>
+      <!-- プロジェクターモード切替 -->
+      <button id="projector-btn" class="btn btn-secondary" style="padding:6px 14px; font-size:0.8rem;">
+        📽 投影モード
+      </button>
+      <nav class="nav-links">
+        <a href="index.html">採点ページ</a>
+        <a href="admin.html">管理</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<main style="padding: 28px 0 60px;">
+  <div class="container" style="max-width:1100px;" id="main-container">
+
+    <!-- ローディング -->
+    <div id="loading" class="loading">
+      <div class="spinner"></div>
+      <span>リアルタイム集計中...</span>
+    </div>
+
+    <!-- データなし -->
+    <div id="no-data-msg" class="card" style="display:none; text-align:center; padding:40px;">
+      <div style="font-size:2.5rem; margin-bottom:12px;">📊</div>
+      <h3 style="color:var(--color-muted); font-family:var(--font-display);">まだ採点データがありません</h3>
+      <p style="color:var(--color-muted); margin-top:8px;">採点が送信されると自動的に表示されます。</p>
+    </div>
+
+    <!-- ── 集計結果エリア ── -->
+    <div id="results-area" style="display:none;">
+
+      <!-- === 部門賞 セクション === -->
+      <h2 class="section-heading">🎖 各部門賞 TOP 3</h2>
+
+      <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap:20px; margin-bottom:40px;">
+
+        <!-- A部門賞 -->
+        <div>
+          <div class="award-label cat-a" id="award-label-a">🔵 A部門賞</div>
+          <div class="rank-list" id="ranking-a"></div>
+        </div>
+
+        <!-- B部門賞 -->
+        <div>
+          <div class="award-label cat-b" id="award-label-b">🟢 B部門賞</div>
+          <div class="rank-list" id="ranking-b"></div>
+        </div>
+
+        <!-- C部門賞 -->
+        <div>
+          <div class="award-label cat-c" id="award-label-c">🩷 C部門賞</div>
+          <div class="rank-list" id="ranking-c"></div>
+        </div>
+
+      </div>
+
+      <!-- === 総合賞 === -->
+      <h2 class="section-heading" style="color:var(--color-overall);">👑 総合賞 TOP 3</h2>
+      <div class="rank-list" id="ranking-overall" style="max-width:560px; margin-bottom:40px;"></div>
+
+      <!-- === 全グループ一覧 === -->
+      <h2 class="section-heading">📋 全グループ 集計一覧</h2>
+      <div class="card" style="padding:0; overflow:hidden;">
+        <div class="results-table-wrap">
+          <table class="results-table">
+            <thead>
+              <tr>
+                <th style="text-align:left; padding-left:18px;">順位</th>
+                <th style="text-align:left;">グループ名</th>
+                <th id="th-a">A部門<br>平均</th>
+                <th id="th-b">B部門<br>平均</th>
+                <th id="th-c">C部門<br>平均</th>
+                <th>総合点</th>
+                <th>採点数</th>
+              </tr>
+            </thead>
+            <tbody id="results-table-body">
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div><!-- /#results-area -->
+  </div>
+</main>
+
+<footer class="page-footer">
+  リアルタイム集計中 — 新しい採点が追加されると自動更新されます
+</footer>
+
+<script src="firebase-config.js"></script>
+<script src="results.js"></script>
+
+</body>
+</html>

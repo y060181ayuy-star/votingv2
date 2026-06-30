@@ -1,0 +1,693 @@
+/* =====================================================
+   style.css - グループ発表 表彰・採点システム
+   共通スタイル
+   ===================================================== */
+
+/* ── デザイントークン ── */
+:root {
+  /* メインカラー：深い紺 × 鮮やかなゴールド */
+  --color-bg:        #0f172a;   /* 背景：ディープネイビー */
+  --color-surface:   #1e293b;   /* カード背景 */
+  --color-surface2:  #2d3f55;   /* 少し明るい面 */
+  --color-border:    #334155;   /* ボーダー */
+  --color-gold:      #f5c842;   /* アクセント：ゴールド */
+  --color-gold-dim:  #c9a030;   /* ゴールド暗め */
+  --color-text:      #e2e8f0;   /* メインテキスト */
+  --color-muted:     #94a3b8;   /* サブテキスト */
+  --color-white:     #ffffff;
+
+  /* 部門カラー */
+  --color-cat-a:     #38bdf8;   /* A部門：スカイブルー */
+  --color-cat-b:     #86efac;   /* B部門：ミントグリーン */
+  --color-cat-c:     #f9a8d4;   /* C部門：ローズ */
+  --color-overall:   #f5c842;   /* 総合：ゴールド */
+
+  /* 状態カラー */
+  --color-success:   #22c55e;
+  --color-danger:    #ef4444;
+  --color-warning:   #f59e0b;
+
+  /* タイポグラフィ */
+  --font-display:    'Noto Serif JP', serif;
+  --font-body:       'Noto Sans JP', sans-serif;
+  --font-data:       'DM Mono', 'Courier New', monospace;
+
+  /* スペーシング */
+  --radius:          12px;
+  --radius-sm:       8px;
+  --shadow:          0 4px 24px rgba(0,0,0,0.4);
+}
+
+/* ── リセット＆ベース ── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+  line-height: 1.6;
+}
+
+/* ── 共通レイアウト ── */
+.container {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.page-header {
+  background: var(--color-surface);
+  border-bottom: 2px solid var(--color-gold);
+  padding: 16px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.page-header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.page-title {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  color: var(--color-gold);
+  letter-spacing: 0.05em;
+}
+
+.badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.badge-open {
+  background: rgba(34, 197, 94, 0.2);
+  color: var(--color-success);
+  border: 1px solid var(--color-success);
+}
+
+.badge-closed {
+  background: rgba(239, 68, 68, 0.2);
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+
+/* ── カード ── */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+
+.card-title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ── ボタン ── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+}
+
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--color-gold);
+  color: var(--color-bg);
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-gold-dim);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: var(--color-surface2);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.15);
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.3);
+}
+
+.btn-block {
+  width: 100%;
+}
+
+/* ── フォーム ── */
+.form-group {
+  margin-bottom: 16px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin-bottom: 6px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+.form-control {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--color-surface2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  transition: border-color 0.2s;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: var(--color-gold);
+}
+
+textarea.form-control {
+  resize: vertical;
+  min-height: 80px;
+}
+
+/* ── スコアボタン（採点用） ── */
+.score-buttons {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.score-btn {
+  width: 56px;
+  height: 56px;
+  border-radius: var(--radius-sm);
+  border: 2px solid var(--color-border);
+  background: var(--color-surface2);
+  color: var(--color-text);
+  font-size: 1.3rem;
+  font-weight: 700;
+  font-family: var(--font-data);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-btn:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+  background: rgba(245, 200, 66, 0.1);
+}
+
+.score-btn.selected {
+  background: var(--color-gold);
+  border-color: var(--color-gold);
+  color: var(--color-bg);
+  transform: scale(1.08);
+  box-shadow: 0 0 12px rgba(245, 200, 66, 0.5);
+}
+
+/* ── アラート ── */
+.alert {
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  margin-bottom: 16px;
+}
+
+.alert-success {
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid var(--color-success);
+  color: var(--color-success);
+}
+
+.alert-error {
+  background: rgba(239, 68, 68, 0.1);
+  border: 1px solid var(--color-danger);
+  color: var(--color-danger);
+}
+
+.alert-warning {
+  background: rgba(245, 158, 11, 0.1);
+  border: 1px solid var(--color-warning);
+  color: var(--color-warning);
+}
+
+/* ── ローディング ── */
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 40px;
+  color: var(--color-muted);
+}
+
+.spinner {
+  width: 24px;
+  height: 24px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-gold);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── ナビゲーションリンク ── */
+.nav-links {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.nav-links a {
+  color: var(--color-muted);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: color 0.2s;
+}
+
+.nav-links a:hover {
+  color: var(--color-gold);
+}
+
+/* ── セクション見出し ── */
+.section-heading {
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  margin: 32px 0 16px;
+  padding-left: 12px;
+  border-left: 3px solid var(--color-gold);
+}
+
+/* ── ページフッター ── */
+.page-footer {
+  text-align: center;
+  padding: 32px 20px;
+  color: var(--color-muted);
+  font-size: 0.8rem;
+}
+
+/* ── ランキング表彰カード（results.html用） ── */
+.award-section {
+  margin-bottom: 40px;
+}
+
+.award-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.award-label.cat-a {
+  background: rgba(56, 189, 248, 0.15);
+  color: var(--color-cat-a);
+  border: 1px solid var(--color-cat-a);
+}
+
+.award-label.cat-b {
+  background: rgba(134, 239, 172, 0.15);
+  color: var(--color-cat-b);
+  border: 1px solid var(--color-cat-b);
+}
+
+.award-label.cat-c {
+  background: rgba(249, 168, 212, 0.15);
+  color: var(--color-cat-c);
+  border: 1px solid var(--color-cat-c);
+}
+
+.award-label.overall {
+  background: rgba(245, 200, 66, 0.15);
+  color: var(--color-overall);
+  border: 1px solid var(--color-overall);
+}
+
+/* ランキングカードリスト */
+.rank-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.rank-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: border-color 0.2s;
+}
+
+.rank-card.rank-1 {
+  border-color: #f5c842;
+  background: rgba(245, 200, 66, 0.05);
+}
+
+.rank-card.rank-2 {
+  border-color: #c0c0c0;
+  background: rgba(192, 192, 192, 0.05);
+}
+
+.rank-card.rank-3 {
+  border-color: #cd7f32;
+  background: rgba(205, 127, 50, 0.05);
+}
+
+.rank-number {
+  font-family: var(--font-data);
+  font-size: 1.8rem;
+  font-weight: 700;
+  min-width: 48px;
+  text-align: center;
+}
+
+.rank-1 .rank-number { color: #f5c842; }
+.rank-2 .rank-number { color: #c0c0c0; }
+.rank-3 .rank-number { color: #cd7f32; }
+
+.rank-info {
+  flex: 1;
+}
+
+.rank-group-name {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--color-white);
+}
+
+.rank-score-detail {
+  font-family: var(--font-data);
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  margin-top: 2px;
+}
+
+.rank-score {
+  font-family: var(--font-data);
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  min-width: 64px;
+  text-align: right;
+}
+
+.rank-score small {
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+/* ── 全グループ一覧テーブル（results.html用） ── */
+.results-table-wrap {
+  overflow-x: auto;
+}
+
+.results-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+}
+
+.results-table th {
+  background: var(--color-surface2);
+  color: var(--color-muted);
+  font-weight: 700;
+  padding: 10px 14px;
+  text-align: center;
+  border-bottom: 2px solid var(--color-border);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+}
+
+.results-table td {
+  padding: 10px 14px;
+  text-align: center;
+  border-bottom: 1px solid var(--color-border);
+  font-family: var(--font-data);
+}
+
+.results-table td.group-name {
+  text-align: left;
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: var(--color-white);
+}
+
+.results-table tr:hover td {
+  background: rgba(255,255,255,0.03);
+}
+
+.results-table .score-a { color: var(--color-cat-a); }
+.results-table .score-b { color: var(--color-cat-b); }
+.results-table .score-c { color: var(--color-cat-c); }
+.results-table .score-total { color: var(--color-gold); font-weight: 700; }
+
+/* ── 管理画面（admin.html）固有 ── */
+.admin-status-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px;
+  background: var(--color-surface2);
+  border-radius: var(--radius-sm);
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 700;
+}
+
+.status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.status-dot.open {
+  background: var(--color-success);
+  box-shadow: 0 0 6px var(--color-success);
+  animation: pulse 1.5s infinite;
+}
+
+.status-dot.closed {
+  background: var(--color-danger);
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.5; }
+}
+
+.current-group-display {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-gold);
+  font-family: var(--font-display);
+  text-align: center;
+  padding: 16px;
+  background: rgba(245, 200, 66, 0.05);
+  border: 1px dashed var(--color-gold);
+  border-radius: var(--radius-sm);
+  margin-bottom: 12px;
+}
+
+.group-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.group-select-btn {
+  padding: 10px 8px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface2);
+  color: var(--color-text);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: center;
+}
+
+.group-select-btn:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+}
+
+.group-select-btn.active {
+  background: var(--color-gold);
+  color: var(--color-bg);
+  border-color: var(--color-gold);
+  font-weight: 700;
+}
+
+/* ── 採点ページ固有 ── */
+.group-hero {
+  text-align: center;
+  padding: 32px 20px;
+}
+
+.group-hero-label {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.group-hero-name {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: var(--color-white);
+  margin-bottom: 4px;
+}
+
+.category-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.category-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.category-dot.cat-a { background: var(--color-cat-a); }
+.category-dot.cat-b { background: var(--color-cat-b); }
+.category-dot.cat-c { background: var(--color-cat-c); }
+
+.category-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.category-desc {
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+
+.scoring-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.scoring-section:last-of-type {
+  border-bottom: none;
+}
+
+/* ── 統計バー ── */
+.stat-bar-wrap {
+  margin-top: 6px;
+}
+
+.stat-bar-bg {
+  height: 6px;
+  background: var(--color-surface2);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.stat-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.fill-a { background: var(--color-cat-a); }
+.fill-b { background: var(--color-cat-b); }
+.fill-c { background: var(--color-cat-c); }
+.fill-total { background: var(--color-gold); }
+
+/* ── レスポンシブ ── */
+@media (max-width: 480px) {
+  .group-hero-name { font-size: 2rem; }
+  .score-btn { width: 52px; height: 52px; font-size: 1.2rem; }
+  .rank-score { font-size: 1.5rem; }
+  .rank-number { font-size: 1.4rem; }
+}
+
+/* ── プロジェクター表示モード（results.html） ── */
+.projector-mode {
+  --font-scale: 1.25;
+}
+
+.projector-mode .rank-group-name { font-size: calc(1.1rem * var(--font-scale)); }
+.projector-mode .rank-score { font-size: calc(2rem * var(--font-scale)); }
+.projector-mode .section-heading { font-size: calc(1.3rem * var(--font-scale)); }
